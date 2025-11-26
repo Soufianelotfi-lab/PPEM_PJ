@@ -1,0 +1,15 @@
+# Visual Studio
+.vs/
+*.vsidx
+
+# Build folders
+bin/
+obj/
+Debug/
+Release/
+
+# User settings
+*.user
+*.suo
+*.cache
+*.pdb
