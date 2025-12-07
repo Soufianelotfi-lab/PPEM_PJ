@@ -27,6 +27,8 @@ void disparitySelect(int height, int width, int scale,
 
 	// For all other iterations
 	// Scan the pixels of the aggregated disparity
+	#pragma omp parallel for schedule(guided) private(j,i) firstprivate(height, width, minDisparity, disparity, aggregatedDisparity,scale,bestCost,result)
+
 	for (j = 0; j < height; j++)
 	{
 		for (i = 0; i < width; i++)

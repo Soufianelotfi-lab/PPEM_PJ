@@ -20,7 +20,10 @@
 
 void yuv2rgb(int width, int height, unsigned char *y, unsigned char *u, unsigned char *v, unsigned char *rgb){
     int i,j;
-#pragma omp parallel for num_threads(8) private (j, i)
+	#pragma omp parallel for private(i, j) \
+            schedule(static) \
+            firstprivate(width, height, y, u, v, rgb)
+
     for(i=0; i< height; i++){
 
         for(j=0; j < width; j++){

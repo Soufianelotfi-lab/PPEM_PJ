@@ -50,6 +50,8 @@ void medianFilter (int height , int width, int topDownBorderSize,
 	int i,j;
 	int k,l;
 	// Process pixels one by one
+	#pragma omp parallel for schedule(static)  private(j,i,k,l) firstprivate(height,width)
+
 	for(j=topDownBorderSize; j< height-topDownBorderSize; j++){
 		for(i=0;i<width;i++){
 			unsigned char pixels[9];

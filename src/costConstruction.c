@@ -12,7 +12,7 @@
 
 #include "costConstruction.h"
 #include <math.h>
-
+#include <omp.h>
 #define min(x,y) (((x)<(y))?(x):(y))
 
 unsigned char hammingCost(unsigned char *a, unsigned char *b)
@@ -42,6 +42,7 @@ void costConstruction (int height, int width, float truncValue,
     int i,j;
 
     // For each disparity, scan the pixels of the left image
+    #pragma omp parallel for schedule(guided) private(j,i) firstprivate(height,width,grayR,grayL,disparity,truncValue,cenL,cenR)
     for(j=0; j<height; j++)
     {
         for(i=0; i<width; i++)

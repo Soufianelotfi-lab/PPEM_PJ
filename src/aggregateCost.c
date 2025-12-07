@@ -12,7 +12,7 @@
 
 #include "aggregateCost.h"
 #include <string.h>
-
+#include <omp.h>
 #define min(x,y) (((x)<(y))?(x):(y))
 #define max(x,y) (((x)<(y))?(y):(x))
 
@@ -25,6 +25,7 @@ void aggregateCost (int height , int width, int nbIterations,
 
     // For each of the offset, do the horizontal and vertical
     // aggregation
+
     for(offsetIdx=0; offsetIdx< 2*nbIterations; offsetIdx++){
         int offset = offsets[offsetIdx/2];
 
@@ -42,6 +43,8 @@ void aggregateCost (int height , int width, int nbIterations,
 		float *dest = (offsetIdx%2 == 0)? aggregatedDisparity: disparityError; 
 
         // Scan the image pixels
+		#pragma omp parallel for schedule(guided) private(j,i) firstprivate(offset, hOffset, vOffset, weightIdx, src, dest, weights,height,width)
+
 		for(j=0; j<height; j++){
 			for(i=0; i<width; i++){
 				float costM, costP, costO;
@@ -61,7 +64,7 @@ void aggregateCost (int height , int width, int nbIterations,
 			}
 		}
     }
-
+	//#pragma omp parallel for schedule(guided) private(j,i)
     // Copy the result in the output buffer.
     memcpy(aggregatedDisparity,disparityError,height*width*sizeof(float));
 }

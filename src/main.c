@@ -16,13 +16,13 @@
 #include "disparitySelect.h"
 #include "medianFilter.h"
 #include "md5.h"
-
+#include <omp.h>
 
 int stopThreads = 0;
 
 int main(void) {
 	printf("Stereo Matching App\n");
-
+	omp_set_num_threads(9);
 	// Open YUV Files (left & right)
 	initReadYUV(0, WIDTH, HEIGHT);
 	initReadYUV(1, WIDTH, HEIGHT);
@@ -32,12 +32,21 @@ int main(void) {
 	displayRGBInit(1, HEIGHT, WIDTH);
 
 	while (!stopThreads) {
-
 		// Read images
 		static unsigned char yL[HEIGHT * WIDTH], uL[HEIGHT * WIDTH / 4], vL[HEIGHT * WIDTH / 4];
 		static unsigned char yR[HEIGHT * WIDTH], uR[HEIGHT * WIDTH / 4], vR[HEIGHT * WIDTH / 4];
-		readYUV(0, WIDTH, HEIGHT, yL, uL, vL);
-		readYUV(1, WIDTH, HEIGHT, yR, uR, vR);
+		#pragma omp parallel sections shared(yL,yR,uL,uR,vL,vR) num_threads(2)
+				{
+					#pragma omp section
+					{
+						readYUV(0, WIDTH, HEIGHT, yL, uL, vL);
+					}
+					#pragma omp section 
+					{
+						readYUV(1, WIDTH, HEIGHT, yR, uR, vR);
+					}
+				}
+	
 
 		// Convert images to RGB
 		static unsigned char rgbL[HEIGHT * WIDTH * 3], rgbR[HEIGHT * WIDTH * 3];
@@ -53,7 +62,7 @@ int main(void) {
 		static unsigned char cenL[HEIGHT * WIDTH], cenR[HEIGHT * WIDTH];
 		census(HEIGHT, WIDTH, grayL, cenL);
 		census(HEIGHT, WIDTH, grayR, cenR);
-
+	
 		// Pre-compute weights for offset aggregation
 		int offsets[NB_ITERATIONS];
 		static float weightsHor[NB_ITERATIONS * HEIGHT * WIDTH * 3], weightsVert[NB_ITERATIONS * HEIGHT * WIDTH * 3];
