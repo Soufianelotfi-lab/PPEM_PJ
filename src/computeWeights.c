@@ -12,6 +12,8 @@
 
 #include <math.h>
 #include "computeWeights.h"
+#include <omp.h>
+
 
 #define R_gamaC (float) 1.0/16.0f /*(1.0)/16.0 */
 #define min(x,y) (((x)<(y))?(x):(y))
