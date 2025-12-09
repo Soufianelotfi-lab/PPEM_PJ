@@ -22,7 +22,7 @@ int stopThreads = 0;
 
 int main(void) {
 	printf("Stereo Matching App\n");
-	omp_set_num_threads(14);
+	omp_set_num_threads(16);
 	// Open YUV Files (left & right)
 	initReadYUV(0, WIDTH, HEIGHT);
 	initReadYUV(1, WIDTH, HEIGHT);
