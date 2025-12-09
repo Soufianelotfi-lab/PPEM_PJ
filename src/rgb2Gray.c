@@ -17,7 +17,7 @@
 
 void rgb2Gray(int size, unsigned char *rgb, float *gray){
     int idx;
-	#pragma omp parallel for schedule(guided) private(idx) firstprivate(size) 
+	#pragma omp parallel for schedule(static) private(idx) firstprivate(size) 
     for(idx=0; idx< size; idx++){
         gray[idx] = RGB2GRAY_COEF_R*(float)rgb[3*idx] +
                     RGB2GRAY_COEF_G*(float)rgb[3*idx+1] +
