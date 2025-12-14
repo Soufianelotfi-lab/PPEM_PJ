@@ -22,7 +22,7 @@ int stopThreads = 0;
 
 int main(void) {
 	printf("Stereo Matching App\n");
-	omp_set_num_threads(16);
+	omp_set_num_threads(8);
 	// Open YUV Files (left & right)
 	initReadYUV(0, WIDTH, HEIGHT);
 	initReadYUV(1, WIDTH, HEIGHT);
@@ -35,7 +35,7 @@ int main(void) {
 		// Read images
 		static unsigned char yL[HEIGHT * WIDTH], uL[HEIGHT * WIDTH / 4], vL[HEIGHT * WIDTH / 4];
 		static unsigned char yR[HEIGHT * WIDTH], uR[HEIGHT * WIDTH / 4], vR[HEIGHT * WIDTH / 4];
-		#pragma omp parallel sections shared(yL,yR,uL,uR,vL,vR) num_threads(2)
+		#pragma omp parallel sections shared(yL,yR,uL,uR,vL,vR) num_threads(8)
 				{
 					#pragma omp section
 					{

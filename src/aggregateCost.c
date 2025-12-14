@@ -43,7 +43,7 @@ void aggregateCost (int height , int width, int nbIterations,
 		float *dest = (offsetIdx%2 == 0)? aggregatedDisparity: disparityError; 
 
         // Scan the image pixels
-		#pragma omp parallel for schedule(guided) private(j,i) firstprivate(offset, hOffset, vOffset, weightIdx, src, dest, weights,height,width)
+		#pragma omp parallel for schedule(static) private(j,i) firstprivate(offset, hOffset, vOffset, weightIdx, src, dest, weights,height,width)
 
 		for(j=0; j<height; j++){
 			for(i=0; i<width; i++){
