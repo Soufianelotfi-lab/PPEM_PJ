@@ -53,12 +53,12 @@ int main(void) {
 		static unsigned char rgbL[HEIGHT * WIDTH * 3], rgbR[HEIGHT * WIDTH * 3];
 		double t_0 = omp_get_wtime();
 		yuv2rgb(WIDTH, HEIGHT, yL, uL, vL, rgbL);
-		//double t_1 = omp_get_wtime();
-		//T += t_1 - t_0;
-		//t_0 = omp_get_wtime();
+		double t_1 = omp_get_wtime();
+		T += t_1 - t_0;
+		t_0 = omp_get_wtime();
 		yuv2rgb(WIDTH, HEIGHT, yR, uR, vR, rgbR);
-		//t_1 = omp_get_wtime();
-		//T += t_1 - t_0;
+		t_1 = omp_get_wtime();
+		T += t_1 - t_0;
 		// Convert to gray
 		static float grayL[HEIGHT * WIDTH], grayR[HEIGHT * WIDTH];
 		//double t_0 = omp_get_wtime();
@@ -140,11 +140,11 @@ int main(void) {
 
 		// MD5
 		MD5_Update(HEIGHT* WIDTH * sizeof(char), filteredDepthMap);
-		/*Frame++;
+		Frame++;
 		if (Frame % 70 == 0)
 		{
 			printf("temps passé par la fonction est = %.3f ms", (T / Frame)*1000);
-		}*/
+		}
 	}
 
 	return 0;

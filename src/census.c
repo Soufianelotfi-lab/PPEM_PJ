@@ -17,7 +17,7 @@ void census(int height, int width, float *gray, unsigned char *cen){
     int i,j;
     int k,l;
    
-    #pragma omp parallel for schedule(guided) private(j,i, k, l) firstprivate (width, height)
+    #pragma omp parallel for schedule(dynamic) private(j,i, k, l) firstprivate (width, height)
     // Scan the pixels of the grey image
     // except the 1 pixel-wide band around the image.
     for(j=1; j<height-1; j++){
