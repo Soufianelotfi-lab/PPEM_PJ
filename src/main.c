@@ -19,15 +19,17 @@
 #include <omp.h>
 
 int stopThreads = 0;
-int Frame = 0;
-double T;
+//int Frame = 0;
+//double T;
+
 int main(void) {
+
 	printf("Stereo Matching App\n");
 	omp_set_num_threads(14);
 	// Open YUV Files (left & right)
 	initReadYUV(0, WIDTH, HEIGHT);
 	initReadYUV(1, WIDTH, HEIGHT);
-
+	//double t_0 = omp_get_wtime();
 	// Init display
 	displayRGBInit(0, HEIGHT, WIDTH);
 	displayRGBInit(1, HEIGHT, WIDTH);
@@ -54,11 +56,11 @@ int main(void) {
 		double t_0 = omp_get_wtime();
 		yuv2rgb(WIDTH, HEIGHT, yL, uL, vL, rgbL);
 		double t_1 = omp_get_wtime();
-		T += t_1 - t_0;
-		t_0 = omp_get_wtime();
+		//T += t_1 - t_0;
+		//t_0 = omp_get_wtime();
 		yuv2rgb(WIDTH, HEIGHT, yR, uR, vR, rgbR);
-		t_1 = omp_get_wtime();
-		T += t_1 - t_0;
+		//t_1 = omp_get_wtime();
+		//T += t_1 - t_0;
 		// Convert to gray
 		static float grayL[HEIGHT * WIDTH], grayR[HEIGHT * WIDTH];
 		//double t_0 = omp_get_wtime();
@@ -140,11 +142,14 @@ int main(void) {
 
 		// MD5
 		MD5_Update(HEIGHT* WIDTH * sizeof(char), filteredDepthMap);
-		Frame++;
+	
+	
+		/*Frame++;
 		if (Frame % 70 == 0)
 		{
 			printf("temps passé par la fonction est = %.3f ms", (T / Frame)*1000);
 		}
+		*/
 	}
 
 	return 0;
